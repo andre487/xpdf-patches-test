@@ -1,0 +1,22 @@
+Index: splash/Splash.cc
+===================================================================
+--- splash/Splash.cc	(rev 0)
++++ splash/Splash.cc	(working copy)
+@@ -7111,7 +7111,7 @@ void Splash::drawImageArbitraryNoInterp(Guchar *scaledColor,
+     if (rowMin < rowMax) {
+       (this->*drawRowFunc)(dd,
+ 			   colorBuf + (rowMin - xMin) * nComps,
+-			   alphaBuf + (rowMin - xMin),
++			   alphaBuf ? alphaBuf + (rowMin - xMin) : NULL,
+ 			   rowMin, y, rowMax - rowMin);
+     }
+   }
+@@ -7215,7 +7215,7 @@ void Splash::drawImageArbitraryInterp(Guchar *scaledColor, Guchar *scaledAlpha,
+     if (rowMin < rowMax) {
+       (this->*drawRowFunc)(dd,
+ 			   colorBuf + (rowMin - xMin) * nComps,
+-			   alphaBuf + (rowMin - xMin),
++			   alphaBuf ? alphaBuf + (rowMin - xMin) : NULL,
+ 			   rowMin, y, rowMax - rowMin);
+     }
+   }

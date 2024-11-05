@@ -1,0 +1,13 @@
+Index: xpdf/JBIG2Stream.cc
+===================================================================
+--- xpdf/JBIG2Stream.cc	(rev 0)
++++ xpdf/JBIG2Stream.cc	(working copy)
+@@ -2729,7 +2729,7 @@ void JBIG2Stream::readHalftoneRegionSeg(Guint segNum, GBool imm,
+     xx = gridX + m * stepY;
+     yy = gridY + m * stepX;
+     for (n = 0; n < gridW; ++n) {
+-      if (!(enableSkip && skipBitmap->getPixel(n, m))) {
++      if (!(enableSkip && skipBitmap->getPixel(n, m)) && grayImg[i] < patternDict->getSize()) {
+ 	patternBitmap = patternDict->getBitmap(grayImg[i]);
+ 	bitmap->combine(patternBitmap, xx >> 8, yy >> 8, combOp);
+       }

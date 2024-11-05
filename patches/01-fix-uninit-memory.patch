@@ -1,0 +1,35 @@
+Index: xpdf/PDFDoc.cc
+===================================================================
+--- xpdf/PDFDoc.cc	(rev 0)
++++ xpdf/PDFDoc.cc	(working copy)
+@@ -6,6 +6,7 @@
+ //
+ //========================================================================
+ 
++#include <new>
+ #include <aconf.h>
+ 
+ #include <stdio.h>
+@@ -292,10 +293,16 @@ GBool PDFDoc::setup(GString *ownerPassword, GString *userPassword) {
+   return gTrue;
+ }
+ 
++void* allocZero(size_t len) {
++    auto ret = ::operator new(len);
++    memset(ret, 0, len);
++    return ret;
++}
++
+ GBool PDFDoc::setup2(GString *ownerPassword, GString *userPassword,
+ 		     GBool repairXRef) {
+   // read xref table
+-  xref = new XRef(str, repairXRef);
++  xref = new (allocZero(sizeof(XRef))) XRef(str, repairXRef);
+   if (!xref->isOk()) {
+     error(errSyntaxError, -1, "Couldn't read xref table");
+     errCode = xref->getErrorCode();
+@@ -681,4 +688,3 @@ char *PDFDoc::getEmbeddedFileMem(int idx, int *size) {
+   *size = bufSize;
+   return buf;
+ }
+-
